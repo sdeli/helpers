@@ -7,8 +7,8 @@ export interface Config {
   userDataDir: string;
   keywordsListFilePath: string;
   downloadsFolderPath: string;
-  joinedCsvFilePath: string;
   downloadFilesDefaultName: string;
+  assetsFolder: string;
   profiles: {
     default: string;
   };
@@ -29,11 +29,10 @@ export interface Config {
 
 export const config: Config = Object.freeze({
   root: ROOT_FOLDER,
-  assets: ASSETS_FOLDER,
+  assetsFolder: ASSETS_FOLDER,
   userDataDir: ASSETS_FOLDER + '/profiles',
   keywordsListFilePath: ASSETS_FOLDER + '/keywords-list.txt',
   downloadsFolderPath: ASSETS_FOLDER + '/downloads',
-  joinedCsvFilePath: ASSETS_FOLDER + '/joined.csv',
   downloadFilesDefaultName: 'kwfinder_import_export.csv',
   profiles: {
     default: 'profile-1',

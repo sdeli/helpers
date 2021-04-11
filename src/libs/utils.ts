@@ -27,7 +27,7 @@ export async function openPage(url: string, browser?: Browser) {
   return { page, browser };
 }
 
-export async function deleteElementFromDOM(page: Page, sel: string): Promise<string | void> {
+export async function deleteElementFromDOM(page: Page, sel: string, scraperId: number): Promise<string | void> {
   try {
     const message = await page.$eval(sel, (elemToDelete) => {
       if (elemToDelete?.parentNode) {
@@ -39,12 +39,12 @@ export async function deleteElementFromDOM(page: Page, sel: string): Promise<str
     });
     return message;
   } catch (error) {
-    console.log('error while deleting element from DOM');
+    console.log(`scraper: ${scraperId} - error while deleting element from DOM`);
     console.log(error);
   }
 }
 
-export async function downloadKeywordsList(page: Page) {
+export async function downloadKeywordsList(page: Page, scraperId: number, listenToDownload = true) {
   await page.waitForSelector(config.selectors.keywordsTableMasterToggle);
   await page.click(config.selectors.keywordsTableMasterToggle);
 
@@ -52,7 +52,7 @@ export async function downloadKeywordsList(page: Page) {
 
   const exportOptionsButton = (await (await page.$(config.selectors.exportSvg))?.getProperty('parentElement'))?.asElement();
   if (!exportOptionsButton) {
-    console.log('no export options button found');
+    console.log(`scraper: ${scraperId} - no export options button found`);
     return;
   }
 
@@ -62,25 +62,30 @@ export async function downloadKeywordsList(page: Page) {
   await page.waitForSelector(config.selectors.downloadCsvBtn);
   await page.click(config.selectors.downloadCsvBtn);
 
-  await waitToDownloadFile(config.downloadsFolderPath);
-  console.log('download finished');
+  if (listenToDownload) {
+    await listenAndRenameFileOnDownload(config.downloadsFolderPath, scraperId);
+  } else {
+    await page.waitForTimeout(5000);
+  }
+
+  console.log(`scraper: ${scraperId} - download finished`);
 }
 
-async function waitToDownloadFile(folderAbsPath: string) {
-  console.log(`download folders absolut path: ${folderAbsPath}`);
+export async function listenAndRenameFileOnDownload(folderAbsPath: string, scraperId: number | string) {
+  console.log(`scraper: ${scraperId} - download folders absolut path: ${folderAbsPath}`);
   let firstFolderActionHappened = false;
 
   return new Promise((resolve, reject) => {
     const watcher = watch(folderAbsPath);
 
     watcher.on('change', (eventType, currFilesName) => {
-      console.log(`this file should be already downloaded: ${currFilesName}`);
+      console.log(`scraper: ${scraperId} - this file should be already downloaded: ${currFilesName}`);
       if (!firstFolderActionHappened) {
         firstFolderActionHappened = true;
         setTimeout(() => {
           watcher.close();
           resolve('');
-          console.log('cancel');
+          console.log(`scraper: ${scraperId} - cancel`);
         }, 3000);
       }
 
@@ -90,7 +95,7 @@ async function waitToDownloadFile(folderAbsPath: string) {
         const newPath = `${folderAbsPath}/${(currFilesName as string).replace('.csv', '')}_${uuidv4()}.csv`;
         try {
           renameSync(oldPath, newPath);
-          console.log(`the file: ${currFilesName} has been overwritten to: ${currFilesName}_${uuidv4()}`);
+          console.log(`scraper: ${scraperId} - the file: ${currFilesName} has been overwritten to: ${currFilesName}_${uuidv4()}`);
         } catch (error) {}
       }
     });
@@ -102,7 +107,7 @@ async function waitToDownloadFile(folderAbsPath: string) {
     });
 
     setTimeout(() => {
-      reject('download was unsuccessful');
+      reject(`scraper: ${scraperId} - download was unsuccessful`);
     }, 30000);
   });
 }

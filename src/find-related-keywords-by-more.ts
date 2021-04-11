@@ -15,7 +15,7 @@ const keywordsStrList = readFileSync(config.keywordsListFilePath, { encoding: 'u
     const { page, browser } = await openPage(kwToolUrl);
     await page.waitForSelector(config.selectors.keywordsTable);
 
-    await downloadKeywordsList(page);
+    await downloadKeywordsList(page, 1);
     await browser.close();
   }
 })();

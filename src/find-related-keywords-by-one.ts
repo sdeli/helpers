@@ -10,6 +10,6 @@ const KW_TOOL_URL = `https://app.kwfinder.com/dashboard?language_id=0&location_i
   await page.waitForSelector(config.selectors.keywordsTable);
 
   const keywordResListExtractor = new KeywordResListExtractor();
-  await keywordResListExtractor.extract(page);
-  await downloadKeywordsList(page);
+  await keywordResListExtractor.extract(page, 1);
+  await downloadKeywordsList(page, 1);
 })();

@@ -12,7 +12,7 @@ export class KeywordResListExtractor {
   events = new EventEmitter();
   subscriptionExceeded = false;
 
-  public async extract(page: Page) {
+  public async extract(page: Page, scraperId: number) {
     const keywordsAmount = await this.getKeywordsAmount(page);
     this.keywordsPassedOnPage = await this.getCurrentKeywordsInTable(page);
 
@@ -22,10 +22,10 @@ export class KeywordResListExtractor {
     while (isAtBottom && !this.subscriptionExceeded) {
       await page.keyboard.press('ArrowDown');
       await page.waitForTimeout(200);
-      await this.clickAllSearchIcons(page, keywordsAmount);
+      await this.clickAllSearchIcons(page, keywordsAmount, scraperId);
 
       this.updateKeywordsPassedOnPage(page);
-      console.log(`keywords passed: ${this.keywordsPassedOnPage.length}, all keywords amount: ${keywordsAmount}`);
+      console.log(`scraper: ${scraperId} - keywords passed: ${this.keywordsPassedOnPage.length}, all keywords amount: ${keywordsAmount}`);
 
       isAtBottom = this.keywordsPassedOnPage.length < keywordsAmount;
     }
@@ -52,15 +52,15 @@ export class KeywordResListExtractor {
     this.keywordsPassedOnPage = _uniq(this.keywordsPassedOnPage);
   }
 
-  private async clickAllSearchIcons(page: Page, keywordsAmount: number) {
+  private async clickAllSearchIcons(page: Page, keywordsAmount: number, scraperId: number) {
     let searchTermIcon = await page.$(config.selectors.searchIcons);
     while (searchTermIcon) {
       try {
         await page.click(config.selectors.searchIcons);
       } catch (error) {
-        console.log('error while clicking:');
+        console.log(`scraper: ${scraperId} - error while clicking:`);
         console.log(error);
-        const message = await deleteElementFromDOM(page, config.selectors.searchIcons);
+        const message = await deleteElementFromDOM(page, config.selectors.searchIcons, scraperId);
         console.log(`deletion message: ${message || 'none'}`);
       }
 
@@ -71,7 +71,7 @@ export class KeywordResListExtractor {
       }
 
       this.updateKeywordsPassedOnPage(page);
-      console.log(`keywords passed: ${this.keywordsPassedOnPage.length}, all keywords amount: ${keywordsAmount}`);
+      console.log(`scraper: ${scraperId} - keywords passed: ${this.keywordsPassedOnPage.length}, all keywords amount: ${keywordsAmount}`);
 
       await page.waitForTimeout(1500);
 

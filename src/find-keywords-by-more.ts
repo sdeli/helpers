@@ -1,10 +1,11 @@
 import puppeteer, { Browser, Page } from 'puppeteer';
 import { config } from './libs/config';
-import { downloadKeywordsList, openPage } from './libs/utils';
+import { downloadKeywordsList, listenAndRenameFileOnDownload, openPage } from './libs/utils';
 import { readFileSync } from 'fs';
 import { KeywordResListExtractor, KeywordResListExtractorEvents } from './libs/scrapers/keyword-res-list-extractor';
 import { EventEmitter } from 'events';
 
+const KEYWORDS_COUNT_AT_ONE_SCRAPE = 50;
 const PARALLEL_SCRAPERS_COUNT = 4;
 const KEYWORD_TOOL_IMPORT_KEYWORDS_URL = 'https://app.kwfinder.com/import';
 const keywordsList = readFileSync(config.keywordsListFilePath, { encoding: 'utf-8' }) + '\n';
@@ -18,16 +19,27 @@ enum ScrapeExecutorEvents {
 class ScrapeExecutor {
   scrapeFinished = false;
   events = new EventEmitter();
-
+  page: Page | undefined;
   constructor(public readonly scraperId: number) {}
 
   public async scrape(browser: Browser, currentMax700keywords: string) {
-    console.log(`Scraper with the id of ${this.scraperId} started scrape session.`);
+    console.log(`scraper: ${this.scraperId} - Scraper with the id of ${this.scraperId} started scrape session.`);
 
     try {
       // eslint-disable-next-line no-var
-      var { page } = await openPage(KEYWORD_TOOL_IMPORT_KEYWORDS_URL, browser);
+      if (!this.page) {
+        var { page } = await openPage(KEYWORD_TOOL_IMPORT_KEYWORDS_URL, browser);
+        this.page = page;
+      } else {
+        var page = this.page;
+        await this.page.goto(KEYWORD_TOOL_IMPORT_KEYWORDS_URL);
+        console.log(`scraper: ${this.scraperId} - gone to`);
+        // await this.page.waitForNavigation();
+        // console.log(`scraper: ${this.scraperId} - Waited for nav`);
+      }
+
       await page.waitForSelector(config.selectors.importKeywordsInput);
+      console.log(`scraper: ${this.scraperId} - waited for selector`);
       await typeKeywordsAndMoveToKWResPage(page, currentMax700keywords);
 
       const keywordResListExtractor = new KeywordResListExtractor();
@@ -35,16 +47,16 @@ class ScrapeExecutor {
         this.events.emit(ScrapeExecutorEvents.SUBSCRIPTION_EXCEEDED);
       });
 
-      await keywordResListExtractor.extract(page);
+      await keywordResListExtractor.extract(page, this.scraperId);
     } catch (error) {
-      console.log('error:');
+      console.log(`scraper: ${this.scraperId} - error:`);
       console.log(error);
     }
 
     try {
-      await downloadKeywordsList(page);
+      await downloadKeywordsList(page, this.scraperId);
     } catch (error) {
-      console.log('error:');
+      console.log(`scraper: ${this.scraperId} - error:`);
       console.log(error);
     }
 
@@ -67,7 +79,7 @@ async function typeKeywordsAndMoveToKWResPage(page: Page, currentMax700keywords:
     headless: false,
     userDataDir: config.userDataDir,
   });
-
+  listenAndRenameFileOnDownload(config.downloadsFolderPath, 'void');
   for (let i = 0; i < PARALLEL_SCRAPERS_COUNT; i++) {
     initAndExecuteScraper(browser, i);
   }
@@ -83,13 +95,13 @@ function initAndExecuteScraper(browser: Browser, scraperId: number) {
 
   scraper.events.on(ScrapeExecutorEvents.EXTRACTION_FINISHED, () => {
     if (isSubscriptionExceeded) {
-      console.log(`Shutting off. In scraper: ${scraper.scraperId}. Subscription exceeded!`);
+      console.log(`scraper: ${scraperId} - Shutting off. In scraper: ${scraper.scraperId}. Subscription exceeded!`);
       return;
     }
 
     const currentMax700keywords = keywordsBy700.shift();
     if (!currentMax700keywords) {
-      console.log(`Shutting off. No more tasks for scraper: ${scraper.scraperId}.`);
+      console.log(`scraper: ${scraperId} - Shutting off. No more tasks for scraper: ${scraper.scraperId}.`);
       return;
     }
 
@@ -98,7 +110,7 @@ function initAndExecuteScraper(browser: Browser, scraperId: number) {
 
   scraper.events.on(ScrapeExecutorEvents.SUBSCRIPTION_EXCEEDED, () => {
     isSubscriptionExceeded = true;
-    console.log(`Subscription exceeded in scraper: ${scraper.scraperId}`);
+    console.log(`scraper: ${scraperId} - Subscription exceeded in scraper: ${scraper.scraperId}`);
   });
 
   scraper.scrape(browser, currentMax700keywords);
@@ -110,7 +122,7 @@ function getKeywordsArrOf700s(keywordsList: string) {
   console.log(`There are ${keywordsArr.length} keywords to scrape`);
 
   while (keywordsArr.length) {
-    const currentMax700Keywords = keywordsArr.splice(0, 700).join('\n');
+    const currentMax700Keywords = keywordsArr.splice(0, KEYWORDS_COUNT_AT_ONE_SCRAPE).join('\n');
     keywordsBy700.push(currentMax700Keywords);
   }
 
