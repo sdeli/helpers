@@ -71,7 +71,7 @@ export async function downloadKeywordsList(page: Page, scraperId: number, listen
   console.log(`scraper: ${scraperId} - download finished`);
 }
 
-export async function listenAndRenameFileOnDownload(folderAbsPath: string, scraperId: number | string) {
+export async function listenAndRenameFileOnDownload(folderAbsPath: string, scraperId: number | string, shouldClose = true) {
   console.log(`scraper: ${scraperId} - download folders absolut path: ${folderAbsPath}`);
   let firstFolderActionHappened = false;
 
@@ -103,12 +103,16 @@ export async function listenAndRenameFileOnDownload(folderAbsPath: string, scrap
     watcher.on('error', (error) => {
       console.log(error);
       watcher.close();
-      reject();
+      if (shouldClose) {
+        reject();
+      }
     });
 
-    setTimeout(() => {
-      reject(`scraper: ${scraperId} - download was unsuccessful`);
-    }, 30000);
+    if (shouldClose) {
+      setTimeout(() => {
+        reject(`scraper: ${scraperId} - download was unsuccessful`);
+      }, 30000);
+    }
   });
 }
 

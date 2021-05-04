@@ -5,12 +5,14 @@ import { readFileSync } from 'fs';
 import { KeywordResListExtractor, KeywordResListExtractorEvents } from './libs/scrapers/keyword-res-list-extractor';
 import { EventEmitter } from 'events';
 
-const KEYWORDS_COUNT_AT_ONE_SCRAPE = 50;
-const PARALLEL_SCRAPERS_COUNT = 4;
+const KEYWORDS_COUNT_AT_ONE_SCRAPE = 20;
+const PARALLEL_SCRAPERS_COUNT = 6;
 const KEYWORD_TOOL_IMPORT_KEYWORDS_URL = 'https://app.kwfinder.com/import';
 const keywordsList = readFileSync(config.keywordsListFilePath, { encoding: 'utf-8' }) + '\n';
 const keywordsBy700 = getKeywordsArrOf700s(keywordsList);
 
+// var x = document.querySelector('html')
+// x.innerText.includes('Sorry, no SERP results for this keyword')
 enum ScrapeExecutorEvents {
   EXTRACTION_FINISHED = 'extraction-finished',
   SUBSCRIPTION_EXCEEDED = 'subscription-exceeded',
@@ -26,11 +28,12 @@ class ScrapeExecutor {
     console.log(`scraper: ${this.scraperId} - Scraper with the id of ${this.scraperId} started scrape session.`);
 
     try {
-      // eslint-disable-next-line no-var
       if (!this.page) {
+        // eslint-disable-next-line no-var
         var { page } = await openPage(KEYWORD_TOOL_IMPORT_KEYWORDS_URL, browser);
         this.page = page;
       } else {
+        // eslint-disable-next-line no-var
         var page = this.page;
         await this.page.goto(KEYWORD_TOOL_IMPORT_KEYWORDS_URL);
         console.log(`scraper: ${this.scraperId} - gone to`);
@@ -79,7 +82,7 @@ async function typeKeywordsAndMoveToKWResPage(page: Page, currentMax700keywords:
     headless: false,
     userDataDir: config.userDataDir,
   });
-  listenAndRenameFileOnDownload(config.downloadsFolderPath, 'void');
+  listenAndRenameFileOnDownload(config.downloadsFolderPath, 'void', false);
   for (let i = 0; i < PARALLEL_SCRAPERS_COUNT; i++) {
     initAndExecuteScraper(browser, i);
   }
