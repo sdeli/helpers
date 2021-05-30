@@ -32,14 +32,23 @@ function spinAllSentences(sentences: string[]) {
   return sentences.map((sentence) => spin(sentence));
 }
 
+function capitalizeSentences(sentences: string[]) {
+  return sentences.map((sentence) => capitalizeSentence(sentence));
+}
+
+function capitalizeSentence(sentence: string) {
+  return sentence.charAt(0).toUpperCase() + sentence.slice(1);
+}
+
 for (let i = 0; i < 10; i++) {
   const squirtArticleTeaserSentences = getSquirtArticleTeaserSentences();
   const teaserSentence = getRandomSentence(squirtArticleTeaserSentences);
-  const spinedTeaserSentence = spin(teaserSentence);
+  const spinedTeaserSentence = capitalizeSentence(spin(teaserSentence));
 
   const squirtArticleBodySentences = getSquirtArticleBodySentences();
   const mixedSentences = mixUpSentences(squirtArticleBodySentences);
-  const spinedSentences = spinAllSentences(mixedSentences);
+  let spinedSentences = spinAllSentences(mixedSentences);
+  spinedSentences = capitalizeSentences(spinedSentences);
 
   const article = [spinedTeaserSentence, ...spinedSentences].join(' ');
   // const article = [...spinedSentences].join(' ');

@@ -5,9 +5,10 @@ import { readFileSync } from 'fs';
 import { KeywordResListExtractor, KeywordResListExtractorEvents } from './libs/scrapers/keyword-res-list-extractor';
 import { EventEmitter } from 'events';
 
-const KEYWORDS_COUNT_AT_ONE_SCRAPE = 20;
+const KEYWORDS_COUNT_AT_ONE_SCRAPE = 50;
 const PARALLEL_SCRAPERS_COUNT = 6;
 const KEYWORD_TOOL_IMPORT_KEYWORDS_URL = 'https://app.kwfinder.com/import';
+const KEYWORD_SEARCH_LIST_URL = 'https://app.kwfinder.com/dashboard?language_id=0&location_id=0&query=masturbation+porn&source_id=0&sub_source_id=0';
 const keywordsList = readFileSync(config.keywordsListFilePath, { encoding: 'utf-8' }) + '\n';
 const keywordsBy700 = getKeywordsArrOf700s(keywordsList);
 
@@ -18,7 +19,7 @@ enum ScrapeExecutorEvents {
   SUBSCRIPTION_EXCEEDED = 'subscription-exceeded',
 }
 
-class ScrapeExecutor {
+export class GetKeywDiffForAllKwrds {
   scrapeFinished = false;
   events = new EventEmitter();
   page: Page | undefined;
@@ -83,18 +84,41 @@ async function typeKeywordsAndMoveToKWResPage(page: Page, currentMax700keywords:
     userDataDir: config.userDataDir,
   });
   listenAndRenameFileOnDownload(config.downloadsFolderPath, 'void', false);
-  for (let i = 0; i < PARALLEL_SCRAPERS_COUNT; i++) {
-    initAndExecuteScraper(browser, i);
+  console.log('');
+  const shouldRelatedKywdsOfOne = !!KEYWORD_SEARCH_LIST_URL;
+  if (shouldRelatedKywdsOfOne) {
+    initAndExecuteScraper(browser);
+  }
+
+  const shouldScrapeBulkKywds = !KEYWORD_SEARCH_LIST_URL;
+  if (shouldScrapeBulkKywds) {
+    for (let i = 0; i < PARALLEL_SCRAPERS_COUNT; i++) {
+      initAndExecuteBulkScrapers(browser, i);
+    }
   }
 })();
 
-function initAndExecuteScraper(browser: Browser, scraperId: number) {
+async function initAndExecuteScraper(browser: Browser) {
+  console.log('initAndExecuteScraper');
+  const { page } = await openPage(KEYWORD_SEARCH_LIST_URL, browser);
+
+  const keywordResListExtractor = new KeywordResListExtractor();
+  keywordResListExtractor.events.on(KeywordResListExtractorEvents.SUBSCRIPTION_EXCEEDED, () => {
+    console.log('subscription exceeded');
+  });
+  console.log('exec');
+  await page.waitForSelector(config.selectors.keywordsTable);
+
+  await keywordResListExtractor.extract(page, 1);
+}
+
+function initAndExecuteBulkScrapers(browser: Browser, scraperId: number) {
   let isSubscriptionExceeded = false;
 
   const currentMax700keywords = keywordsBy700.shift();
   if (!currentMax700keywords) return;
 
-  const scraper = new ScrapeExecutor(scraperId);
+  const scraper = new GetKeywDiffForAllKwrds(scraperId);
 
   scraper.events.on(ScrapeExecutorEvents.EXTRACTION_FINISHED, () => {
     if (isSubscriptionExceeded) {

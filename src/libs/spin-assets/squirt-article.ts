@@ -146,7 +146,7 @@ export function getSquirtArticleBodySentences() {
       '}, ' +
       `{so that|so|for the sake of|in order to,} her ` +
       `{${repeat(PUSSY_ADJ, 1, 2)} ${PUSSY}{| and{| ${repeat(ASSHOLE_ADJ, 1)}} ${ASSHOLE}}} ` +
-      `{is {properly |nicely |well }in the {picture|view|middle}|can be {looked at|watched}|is {visible|in{| a}{ good| proper} sight}}`,
+      `{is {properly |nicely |well }in the {picture|view|middle}|can be {looked at|watched}|is {visible|in{| a}{ good| proper} sight}}.`,
   ];
 }
 

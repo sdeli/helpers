@@ -15,7 +15,7 @@ export const SHOOT_SPERM = '{ends up {in her {boobs|mouth}|on her tits}|pours|co
 
 export const LICK = '{devour|lick|eat|taste} with {lips|tongue}';
 
-export const WOMAN = '{woman|lady|maiden|beauty|mistress|baby|babe}';
+export const WOMAN = '{woman|lady|maiden|beauty|mistress|baby|babe|chick}';
 export const MATURE_WOMAN = '{milf|mature|ripe|mom|gilf|stepmother}';
 
 export const YOUNG_WOMAN = '{girl|maiden|stepsister|babe|baby|angel|beauty}';
@@ -48,12 +48,12 @@ export function squirt(tense: Tense) {
   }
 }
 export const SQUIRT = '{her fluid|pussy juice|gush|spurt}';
-export const SQUIRT_ADJ = '{creamy|nice|sexy|sweat|wet|thick|greasy}';
+export const SQUIRT_ADJ = '{creamy|nice|sexy|sweet|wet|thick|greasy}';
 export const SQUIRT_BEAM = '{beam|flow}';
 export const SQUIRT_BEAM_ADJ = '{nice|sexy|sprinkling}';
 
 export const PUSSY = '{pussy|pussy|puss|muff|cunt|twat}';
-export const PUSSY_ADJ = '{juicy|flowing|waterfall|cumming|wet|nice|puffy|tight|perfect|warm|shaved|tasty|orgasmic}';
+export const PUSSY_ADJ = '{juicy|flowing|waterfall|cuming|wet|nice|puffy|tight|perfect|warm|shaved|tasty|orgasmic}';
 
 export const VAGINA = '{vagina|hole|pussy hole|honey pot|cunt|vagina|slit}';
 
@@ -90,8 +90,8 @@ export const STRONG_ORGASM_ADJ = '{unforgettable|incredible|juicy|pussy shaking|
 
 export const SEX_POSES = '{doggy|doggystyle|missionary|corkscrew|face off}';
 
-export const ASS = '{ass|butt|bumm|booty}';
-export const ASS_ADJ = '{nice|jucy|bubble|round|hard}';
+export const ASS = '{ass|butt|bum|booty}';
+export const ASS_ADJ = '{nice|juicy|bubble|round|hard}';
 export const SLAPS_ASS = '{slaps|blow|spank}';
 
 export const ASSHOLE = '{hole|asshole|butt hole|anus}';
@@ -103,7 +103,7 @@ export const SEX = '{sex|fuck}';
 export const SEX_ADJ = '{hot|lustful|sensual|hard}';
 
 export const LIKE_TO_DO = '{likes|loves}';
-export const AFTER = '{then|{straight|right} after|{straight|right} afterward|{next}|followingly|in the {next|comming} {scene|shot}|a minute later|thereafter}';
+export const AFTER = '{then|{straight|right} after|{straight|right} afterward|{next}|followingly|in the {next|coming} {scene|shot}|a minute later|thereafter}';
 export const AS_SOON_AS = '{As|As soon as|While|Right away}';
 
 export const SOON = 'soon: {soon|shortly|in a minute|in no time}';
