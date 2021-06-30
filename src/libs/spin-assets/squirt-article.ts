@@ -102,7 +102,7 @@ export function getSquirtArticleBodySentences() {
       ` pussy with her ${repeat(DILDO_ADJ, 1, 2)} ${DILDO}, ${THATS_WHY} her ${PUSSY_ADJ} pussy {can't stop|is just|is just {diligently|eagerly}|starts {diligently|eagerly}} ` +
       `{flowing|gushing|pouring|spilling|flooding} ${repeat(SQUIRT_ADJ, 1, 2)} ${SQUIRT}.`,
     // sentence 5
-    `{{{this|that} is|You see now|so|so see here}|{{this|that} is|You see now|so|so see here}|that's}{{| exactly} {the way|how}| the {perfect|ideal} way how}` +
+    `{{{this|that} is|You see now|so|so see here}|{{this|that} is|You see now|so|so see here}|that's}{{| exactly| absolutely| ultimately} {the {way|method|technique}|how}| the {perfect|ideal|best|sexiest} {way|method|technique} how}` +
       ` her ${PUSSY_ADJ} {pussy|hole} {likes{| it}|loves{| it}|{gets to be|will be|becomes{| to be}} a ${PUSSY_ADJ} fountain|{gets to be|will be} ${PUSSY_ADJ} a geyser}.`,
     // sentence 6
     `{orgasm {follows|after} orgasm|one orgasm after an other|} and this ${LUSTFUL_WOMAN_ADJ} ${YOUNG_WOMAN} {can't stop|can not stop|keeps on|} ${moan(Tense.cont)}, ` +
@@ -120,7 +120,7 @@ export function getSquirtArticleBodySentences() {
       ` her {${ASSHOLE}|${repeat(ASS_ADJ, 0, 1)} ${ASS}}, it {gets|becomes} ` +
       ` {thicker and thicker|{{| much}more|increasingly} thicker|{{|much }more|increasingly} creamy|{{|much }more|increasingly} greasy}.`,
     // sentence 8
-    `{Cleanly apparent|` +
+    `{{Cleanly|Clearly} apparent|` +
       `{it is|it's{| totally}} clear|` +
       `{it is} no{|t a} secret|` +
       `it isn't a secret}, ` +
@@ -138,7 +138,7 @@ export function getSquirtArticleBodySentences() {
       `{while|at the same time|meanwhile|as|during} she is {endlessly|desperately|continuously|steadily} ${moan(Tense.cont)} from {orgasmic|intense|body shaking|unforgettable} ` +
       `{pleasure|feeling|experience|sensation} in her {${repeat(ASS_ADJ, 1, 2)} {${PUSSY}|${VAGINA}} and ${CLIT}|${CLIT} and ${repeat(PUSSY_ADJ, 1, 2)} {${PUSSY}|${VAGINA}}}.`,
     // sentence 8
-    `{{inbetween|meanwhile|in the meantime}|{inbetween|meanwhile|in the meantime}|${AFTER}} ` +
+    `{{in Between|meanwhile|in the meantime}|{inbetween|meanwhile|in the meantime}|${AFTER}} ` +
       '{' +
       `she {gets up|reaches|moves} to {fix|set|adjust} the {camera{s|}|cam{s|}} {position|angle}|` +
       `she {moves|adjusts|turns} the {camera|cam} {into the|to {the|a}} {correct|proper|nice} {position|angle}|` +
@@ -169,3 +169,5 @@ export function repeat(spinSyntaxWords: string, count: number, max?: number): st
   }
   return words.join(', ');
 }
+
+// https://orgasmmasturbationtube.com/wp-content/uploads/2021/06/best-lesbian-squirting-porn-of-all-time.jpg

@@ -23,19 +23,8 @@ for (let i = 0; i < csvFileNames.length; i++) {
 console.log('check: ' + joinedFilePath);
 
 function getFormattedDate() {
-  var date = new Date();
-  var str =
-    date.getFullYear() +
-    '-' +
-    (date.getMonth() + 1) +
-    '-' +
-    date.getDate() +
-    '_' +
-    date.getHours() +
-    '-' +
-    date.getMinutes() +
-    '-' +
-    date.getSeconds();
+  const date = new Date();
+  const str = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + '_' + date.getHours() + '-' + date.getMinutes() + '-' + date.getSeconds();
 
   return str;
 }

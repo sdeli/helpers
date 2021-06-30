@@ -5,7 +5,7 @@ export enum Tense {
 }
 
 export const MAN = '{guy|male|dude|men}';
-export const YOUNG_MALE = '{Young|Youthful|Youngish|Handsome} male';
+export const YOUNG_MALE = '{Young|Youthful|Youngish|Handsome}';
 
 export const PENIS = '{dick|penis|fat stuff|cock}';
 export const PENIS_ADJ = '{huge|enormous|muscular|thick|big|hard}';
@@ -18,7 +18,7 @@ export const LICK = '{devour|lick|eat|taste} with {lips|tongue}';
 export const WOMAN = '{woman|lady|maiden|beauty|mistress|baby|babe|chick}';
 export const MATURE_WOMAN = '{milf|mature|ripe|mom|gilf|stepmother}';
 
-export const YOUNG_WOMAN = '{girl|maiden|stepsister|babe|baby|angel|beauty}';
+export const YOUNG_WOMAN = '{girl|maiden|step sister|babe|baby|angel|beauty}';
 export const PROSTITUTE = '{slut|cunt|whore|hooker}';
 
 export const LUSTFUL_WOMAN_ADJ = '{passionate|sexy|nice titted|juicy ass|horny|lustful|hot|debaucher|tempting|temptress|slutty|naughty}';
@@ -32,7 +32,7 @@ export function mature(womanSyn?: string): string {
 
 export const BREASTS = '{tits|breasts|boobs|shapes|jugs|melons}';
 export const BREASTS_ADJ = '{soft|nice|sexy|superb|flawless|amazing}';
-export const BIG_BREASTS_ADJ = '{huge|superb|flawless|big|great|nice large|nelon shaped|massive}';
+export const BIG_BREASTS_ADJ = '{huge|superb|flawless|big|great|nice large|melon shaped|massive}';
 
 export const SUCK = '{sucks|blows|gives head|sucked him off|swallows {dick|penis}|gives {|sloppy} blow job|empties his balls}';
 export const LUBRICATE = '{slopes it|spits the dick|slopes her finger and massage the dick}';
@@ -53,7 +53,7 @@ export const SQUIRT_BEAM = '{beam|flow}';
 export const SQUIRT_BEAM_ADJ = '{nice|sexy|sprinkling}';
 
 export const PUSSY = '{pussy|pussy|puss|muff|cunt|twat}';
-export const PUSSY_ADJ = '{juicy|flowing|waterfall|cuming|wet|nice|puffy|tight|perfect|warm|shaved|tasty|orgasmic}';
+export const PUSSY_ADJ = '{juicy|flowing|waterfall|hungry|wet|nice|puffy|tight|perfect|warm|shaved|tasty|orgasmic}';
 
 export const VAGINA = '{vagina|hole|pussy hole|honey pot|cunt|vagina|slit}';
 
@@ -64,7 +64,7 @@ export function rub(tense: Tense) {
   }
 
   if (tense === Tense.third) {
-    return '{fondles|rubs|tickles|grindes|glides|makes circles on|grazes|stimulates}';
+    return '{fondles|rubs|tickles|grinds|glides|makes circles on|grazes|stimulates}';
   }
 
   if (tense === Tense.norm) {
@@ -149,3 +149,7 @@ export const THATS_WHY = '{so|thence|thus|therefore}';
 // flush, splash
 // orgasm adj: intense, well deserved, strong, pussy shaking, body shaking, whole body
 // https://xhamster.com/videos/wet-amateur-orgasms-12306525&from=player_related
+// dip wet => csopog
+//  charming stunning delightful wonderful
+//  liheg gasp
+// I trembled with pleasure
