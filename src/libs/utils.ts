@@ -1,7 +1,6 @@
-import puppeteer, { Page } from 'puppeteer';
+import puppeteer, { Page, Browser } from 'puppeteer';
 import { config } from './config';
 import { renameSync, watch } from 'fs';
-import { Browser } from 'puppeteer';
 import { v4 as uuidv4 } from 'uuid';
 
 export async function openPage(url: string, browser?: Browser) {
